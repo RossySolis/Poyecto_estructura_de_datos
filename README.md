@@ -32,4 +32,56 @@ void crearProceso(string estado, int prioridad) {
     }
     cout << "Proceso creado con ID: " << nuevo->id << ", Estado: " << estado << endl;
 }
+void crearProceso(string estado, string prioridad) {
+    if (estado == "invalido" || prioridad == "invalida") {
+        cout << "Estado o prioridad inválida.\n";
+        return;
+    }
+
+    Proceso* nuevo = new Proceso;
+    nuevo->id = siguienteID++;
+    nuevo->estado = estado;
+    nuevo->prioridad = prioridad;
+    nuevo->topeMemoria = -1;
+    nuevo->siguiente = NULL;
+
+    if (cabeza == NULL) {
+        cabeza = nuevo;
+    } else {
+        Proceso* aux = cabeza;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        aux->siguiente = nuevo;
+    }
+
+    procesosCreados++;
+    cout << "Proceso creado con ID: " << nuevo->id << ", Estado: " << estado << ", Prioridad: " << prioridad << endl;
+
+    if (procesosCreados == 4)
+        cout << " Memoria casi llena (por cantidad de procesos).\n";
+    else if (procesosCreados == 5)
+        cout << " Memoria llena (por cantidad de procesos).\n";
+}
+
+void mostrarProcesos() {
+    Proceso* aux = cabeza;
+    cout << "\n--- Procesos registrados ---\n";
+    while (aux != NULL) {
+        cout << "ID: " << aux->id
+             << ", Estado: " << aux->estado
+             << ", Prioridad: " << aux->prioridad
+             << ", Memoria usada (pila): " << aux->topeMemoria + 1;
+        if (aux->topeMemoria + 1 >= 90)
+            cout << " (¡Memoria casi llena!)";
+        cout << endl;
+        aux = aux->siguiente;
+    }
+
+    cout << "Memoria disponible del sistema: " << memoriaDisponible << " unidades\n";
+
+    if (memoriaDisponible == 0)
+        cout << " Memoria del sistema llena.\n";
+    else if (memoriaDisponible <= 1)
+        cout << " Advertencia: Memoria del sistema casi llena.\n";
+}
 
