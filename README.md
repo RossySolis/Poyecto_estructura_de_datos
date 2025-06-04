@@ -85,3 +85,21 @@ void mostrarProcesos() {
         cout << " Advertencia: Memoria del sistema casi llena.\n";
 }
 
+void cambiarEstado(int id, string nuevoEstado) {
+    if (nuevoEstado == "invalido") {
+        cout << "Estado inválido.\n";
+        return;
+    }
+
+    Proceso* aux = cabeza;
+    while (aux != NULL) {
+        if (aux->id == id) {
+            aux->estado = nuevoEstado;
+            cout << "Estado del proceso " << id << " cambiado a " << nuevoEstado << endl;
+            return;
+        }
+        aux = aux->siguiente;
+    }
+
+    cout << "Proceso no encontrado.\n";
+}
